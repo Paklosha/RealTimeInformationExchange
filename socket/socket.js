@@ -2,11 +2,8 @@ const app = require('express')();
 var cors = require('cors')
 const server = require('http').Server(app);
 
-/* const WebSocket = require("ws");
-const websocketServer = new WebSocket.Server({ server }); */
 app.use(cors())
 
-//const io = require("socket.io")(server);
 const io = require("socket.io")(server, {
   cors: {
     origin: "http://localhost:8080",
@@ -14,22 +11,9 @@ const io = require("socket.io")(server, {
   }
 });
 
-
-
-
-/* websocketServer.on('close', function close() {
-    console.log('disconnected');
-  }); */
-
 module.exports = {
-
-    socket : any = /* websocketServer */io.on("connection", (webSocketClient) => {
+    socket : any = io.on("connection", (webSocketClient) => {
         console.log('sockets are connected')
-
-        webSocketClient.on("close", function(ev) {
-          console.log('disconnected SOCKET');
-        })
-
       })
 };
 

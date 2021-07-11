@@ -21,7 +21,6 @@ amqp.connect('amqp://localhost', function (error0, connection) {
             stock = JSON.parse(data.content.toString())
             console.log(" [x] Received Stock:", stock.name + " : " + stock.value);
             //Socket Trigger All Clients
-            console.log('LETS GOOOO')
             io.socket.emit("updatedStock", stock);
         }, {
             noAck: true

@@ -11,19 +11,15 @@ const sendRabbitMQ = function sendRabbitMQ(queueName, data) {
             if (error1) {
                 throw error1;
             }
-
             var queue = queueName;
-
             channel.assertQueue(queue, {
                 durable: false
             });
             channel.sendToQueue(queue, Buffer.from(data));
-
             console.log(" [x] Sent %s", data);
         });
         setTimeout(function () {
             connection.close();
-            //process.exit(0);
         }, 500);
     });
 }
