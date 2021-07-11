@@ -20,6 +20,8 @@ Example data-set you can see below
 }
 ```
 
+# Application preview
 
+![alt text](https://github.com/Paklosha/RealTimeInformationExchange/blob/main/vueui/src/assets/images/Screenshot%20from%202021-07-11%2014-01-58.png)
 
 
