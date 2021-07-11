@@ -23,9 +23,21 @@ Real-Time Exchange Information With Microservices on NodeJs (ExpressJs), RabbitM
 # Usage and development
 [(Back to top)](#table-of-contents)
 
-- execute npm run serve command from vueui directory
-- execute node service.js command from root directory
-- execute node consumer.js from consumer directory
+- execute **npm run serve** command from vueui directory
+- execute **node service.js** command from root directory
+- execute **node consumer.js** from consumer directory
+- use http://localhost:9480/getstockData post route to send updated stocks and see real-time client changes  
+
+Example data-set you can see below
+
+```
+{
+    "name":"Nikkei 225",
+    "value":2000,
+    "change": 78.03,
+    "percentage": 0.88
+}
+```
 
 
 
