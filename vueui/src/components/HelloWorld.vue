@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="jumbotron">
-      <h2>Coders RealTime Stock Banner</h2>
+      <h2>Real-Time Exchange Information With Microservices on NodeJs (ExpressJs), RabbitMQ && SocketIO</h2>
     </div>
     <div class="table-responsive">
       <table class="table table-striped table-dark">
