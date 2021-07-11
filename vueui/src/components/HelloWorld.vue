@@ -1,58 +1,122 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+<div class="container">
+  <div class="jumbotron">
+    <h2>Coders RealTime Stock Banner</h2>
   </div>
+  <div class="table-responsive">
+    <table class="table table-striped table-dark">
+      <thead>
+        <tr>
+          <th>
+            Name
+          </th>
+          <th>
+            Value
+          </th>
+          <th>
+            Change
+          </th>
+          <th>
+            Percentage
+          </th>
+          <th>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="stock in stocks" :key="stock">       
+          <td>{{stock.name}}</td>
+          <td>{{stock.value}}</td>
+          <td>{{stock.change}}</td>
+          <td>{{stock.percentage}}</td>       
+          <td><img :src="require(`@/assets/images/${stock.image}.png`)" width="50px"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 </template>
 
 <script>
+
+import { io } from "socket.io-client";
+
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+     data: function() {
+    return {
+      connection: null,
+      stocks: null
+    }
+  },
+  methods: {
+    sendMessage: function(message) {
+      console.log("Hello")
+      console.log(this.connection);
+      this.connection.send(message);
+    }
+  },
+  created: function() {
+    const socket = io("ws://localhost:1923");
+
+socket.on("connect", () => {
+  console.log('SUCCSESSFULLY CONNECTED')
+
+});
+
+// handle the event sent with socket.send()
+socket.on("message", data => {
+  
+  console.log('CATCH MESSAGE',data);
+});
+
+// handle the event sent with socket.emit()
+socket.on("updatedStock", (elem1) => {
+  console.log('FROM UPDATEDSTOCK',elem1);
+});
+   // socket.on('updatedStock',(data) => console.log(data))
+    /* console.log('dd',this.socket)
+    console.log("Starting connection to WebSocket Server")
+    this.connection = new WebSocket("ws://localhost:1923")
+
+    this.connection.onmessage = function(event) {
+      console.log('DEBUG')
+      console.log(event);
+    }
+
+    this.connection.onopen = function(event) {
+      console.log(event)
+      console.log("Successfully connected to the echo websocket server...")
+    }
+
+    this.connection.addEventListener('updatedStock', function (event) {
+    console.log('Message from server ', event.data);
+}); */
+
+},
+  mounted () {
+    this.axios
+      .get('http://localhost:9480/getstockData')
+      .then(response => {
+        this.stocks = response.data;
+        this.stocks.forEach(item => {
+          item.image = item.change > 0 ? "green" : "red";
+        })
+
+
+        console.log(this.stocks)
+        })
   }
+
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+img{
+  width: 50px;
 }
 </style>
